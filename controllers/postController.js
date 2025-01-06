@@ -44,30 +44,12 @@ function modify(req, res){
 }
 
 function destroy(req, res){
-    const id = parseInt(req.params.id)
-	console.log(`Elimino il post con id: ${id}`)
-
-    let postIndex
-    if(isNaN(id)){
-        postIndex = posts.findIndex((post) => post.slug === req.params.id)
-    }
-	else { 
-        postIndex = posts.findIndex((post) => post.id === id)
-    }
-
-	if (postIndex === -1) {
-		res.status(404)
-
-		return res.json({
-			error: 'Post not found',
-			message: 'Il post non è stato trovato.',
-		})
-	}
-    
-	posts.splice(postIndex, 1)
-
-	res.sendStatus(204)
-    console.log(posts)
+    const { id } = req.params
+    console.log(id)
+    const sql = `DELETE FROM posts WHERE id = ?`
+    connection.query(sql, [id], (err) => {
+        if (err) return res.status(500).json({ error: 'Failed to delete post' });
+        })
 }
 
 module.exports = {index, show, store, update,modify,destroy}
