@@ -48,7 +48,8 @@ function destroy(req, res){
     console.log(id)
     const sql = `DELETE FROM posts WHERE id = ?`
     connection.query(sql, [id], (err) => {
-        if (err) return res.status(500).json({ error: 'Failed to delete post' });
+        if (err) return res.status(500).json({ error: 'Failed to delete post' })
+        res.sendStatus(204)
         })
 }
 
